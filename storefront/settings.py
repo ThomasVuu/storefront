@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'playground',
     'debug_toolbar',
-    'store',
-    'store_custom',
+    'core',
     'tags',
-    'likes'
+    'likes',
+    'store',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +148,5 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE':10
 }
+
+AUTH_USER_MODEL = 'core.User'
