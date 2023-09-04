@@ -1,5 +1,5 @@
 from decimal import Decimal
-from .models import Product, Collection, Review, Cart, CartItem, Customer
+from .models import OrderItem, Product, Collection, Review, Cart, CartItem, Customer, Order
 from rest_framework import serializers
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -95,3 +95,21 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['id', 'user_id', 'phone', 'birth_date', 'membership']
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerializer()
+    total_price = serializers.SerializerMethodField()
+
+    def get_total_price(self, order_item:OrderItem):
+        return order_item.quantity * order_item.product.unit_price
+
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'product', 'quantity', 'total_price']
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'placed_at', 'payment_status', 'items']
+
